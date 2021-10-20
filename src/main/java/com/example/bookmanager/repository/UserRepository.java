@@ -1,11 +1,15 @@
 package com.example.bookmanager.repository;
 
 import com.example.bookmanager.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 // 처음 값은 entity 타입 두번째 값은 유저의 pk 값을 가지면 된다.
@@ -74,4 +78,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findFirst1ByNameOrderByIdDescEmailAsc(String name);
 
     List<User> findFirstByName(String name, Sort sort);
+
+    Page<User> findByName(String name, Pageable pageable);
+
+    // Query value 의 결과값이 Map 의 키 밸류로 값이 저장된다
+    @Query(value = "select * from user limit 1;", nativeQuery = true)
+    Map<String, Object> findRawRecord();
 }
