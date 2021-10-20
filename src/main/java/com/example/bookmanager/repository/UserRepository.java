@@ -1,6 +1,7 @@
 package com.example.bookmanager.repository;
 
 import com.example.bookmanager.domain.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
@@ -23,12 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User streamByEmail(String email);
 
     User findUserByEmail(String email);
-
-    List<User> findFirst1ByName(String name);
-
-    List<User> findTop1ByName(String name);
-
-    List<User> findLast1ByName(String name);
 
     List<User> findByEmailAndName(String email, String name);
 
@@ -59,12 +54,24 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByNameLike(String name);
 
     // is 키워드는 특별한 역할을 하지 않고 코드 가독성을 높이는 키워드이다.
-    List<User> findUserByNameIs(String name);
+    List<User> findUserByName(String name);
 
     // 위의 쿼리메서드와 같은 역할이다.
-    List<User> findUserByName(String name);
+    List<User> findUserByNameIs(String name);
 
     // 위의 쿼리메서드와 같은 역할이다.
     List<User> findUserByNameEquals(String name);
 
+    List<User> findFirst1ByName(String name);
+
+    List<User> findTop1ByName(String name);
+
+    List<User> findLast1ByName(String name);
+
+    List<User> findTop1ByNameOrderByIdDesc(String name);
+
+    // Id 에 역순 Email 에 정순
+    List<User> findFirst1ByNameOrderByIdDescEmailAsc(String name);
+
+    List<User> findFirstByName(String name, Sort sort);
 }

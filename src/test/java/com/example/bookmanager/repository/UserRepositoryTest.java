@@ -183,18 +183,54 @@ class UserRepositoryTest {
 
         // in 절은 보통 다른 쿼리의 return 된 결과 값을 넣는다.
         // select * from User where User.name in (?, ?)
-        System.out.println("findByNameIn :"+userRepository.findByNameIn(Lists.newArrayList("a", "b")));
+        System.out.println("findByNameIn :" + userRepository.findByNameIn(Lists.newArrayList("a", "b")));
 
         // select * from User where User.name like ?% escape ?
-        System.out.println("findByNameStartingWith :"+userRepository.findByNameStartingWith("a"));
+        System.out.println("findByNameStartingWith :" + userRepository.findByNameStartingWith("a"));
 
         // select * from User where User.name like %? escape ?
-        System.out.println("findByNameEndingWith :"+userRepository.findByNameEndingWith("b"));
+        System.out.println("findByNameEndingWith :" + userRepository.findByNameEndingWith("b"));
 
         // select * from User where User.name like %?% escape ?
-        System.out.println("findByNameContains :"+userRepository.findByNameContains("c"));
+        System.out.println("findByNameContains :" + userRepository.findByNameContains("c"));
 
         // select * from User where User.name lik %? escape ?
         System.out.println("findByNameLike :" + userRepository.findByNameLike("%ab"));
+    }
+
+    @Test
+    void pagingAndSortingTest() {
+        userRepository.save(new User(1, "abb", "a@naver.com", LocalDateTime.now(), LocalDateTime.now()));
+        userRepository.save(new User(2, "bab", "b@naver.com", LocalDateTime.now(), LocalDateTime.now()));
+        userRepository.save(new User(3, "caa", "c@naver.com", LocalDateTime.now(), LocalDateTime.now()));
+        userRepository.save(new User(4, "dbca", "d@naver.com", LocalDateTime.now(), LocalDateTime.now()));
+        userRepository.save(new User(5, "ecb", "e@google.co.kr", LocalDateTime.now(), LocalDateTime.now()));
+        userRepository.save(new User(6, "fca", "f@google.co.kr", LocalDateTime.now(), LocalDateTime.now()));
+        userRepository.save(new User(7, "abb", "f@google.co.kr", LocalDateTime.now(), LocalDateTime.now()));
+
+        System.out.println("findTop1ByName :" + userRepository.findTop1ByName("abb"));
+
+        // findLast1ByName => JPA 가 인식하지 못함, 수정해야 한다.
+        System.out.println("findLast1ByName :" + userRepository.findLast1ByName("abb"));
+
+        // select * from User where User.name = ? order by User.id desc limit ?
+        System.out.println("findTop1ByNameOrderByIdDesc :" + userRepository.findTop1ByNameOrderByIdDesc("abb"));
+
+        // select * from User where User.name = ? order by User.id desc, User.email asc limit ?
+        System.out.println("findFirst1ByNameOrderByIdDescEmailAsc :" + userRepository.findFirst1ByNameOrderByIdDescEmailAsc("abb"));
+
+        // select * from User where User.name = ? order by User.id desc, User.name asc limit ?
+        System.out.println("findFirstByNameWithSortParams :" + userRepository.findFirstByName("abb", Sort.by(Sort.Order.desc("id"), Sort.Order.asc("name"))));
+
+        System.out.println("findFirstByNameWithSortParams :" + userRepository.findFirstByName("abb", getSort()));
+    }
+
+    private Sort getSort() {
+        return Sort.by(
+                Sort.Order.desc("id"),
+                Sort.Order.asc("name"),
+                Sort.Order.desc("createdAt"),
+                Sort.Order.asc("updatedAt")
+        );
     }
 }
