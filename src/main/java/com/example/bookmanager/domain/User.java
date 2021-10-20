@@ -12,9 +12,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Builder
 @Entity
+@EntityListeners(value = MyEntityListener.class)
 // index 나 제약사항은 db 에 맡기고 Entity 에는 적용시키지 않는게 보편적이다.
 //@Table(name = "user", indexes = { @Index(columnList = "name")}, uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
-public class User {
+public class User implements Auditable{
 
     // User 라는 테이블의 pk, 1 씩 자동으로 증가
     @Id
@@ -40,8 +41,58 @@ public class User {
 
     private LocalDateTime updatedAt;
 
+
+//    // 개발자가 setCreatedAt / setUpdatedAt 을 하지않아도 자동으로 세팅이 된다.
+//    @PrePersist
+//    public void prePersist() {
+//        this.createdAt = LocalDateTime.now();
+//        this.updatedAt = LocalDateTime.now();
+//    }
+//
+//    @PreUpdate
+//    public void preUpdate() {
+//        this.updatedAt = LocalDateTime.now();
+//    }
+
 //    // DB 에 적용시키지 않고 서버 내에서 사용하고 싶을 경우 => @Transient 사용
 //    @Transient
 //    private String testData;
+
+//    @PrePersist // persist 인서트 전에 실행되는 메소드
+//    public void prePersist() {
+//        System.out.println(">>>> prePersist");
+//    }
+//
+//    @PostPersist // persist 메서드 실행되고 난 후 실행되는 메서드
+//    public void postPersist() {
+//        System.out.println(">>>> postPersist");
+//    }
+//
+//    @PreUpdate // merge 메서드가 실행되기 전에 실행되는 메서드
+//    public void preUpdate() {
+//        System.out.println(">>>> preUpdate");
+//    }
+//
+//    @PostUpdate // merge 메서드가 실행되고 후 실행되는 메서드
+//    public void postUpdate() {
+//        System.out.println(">>>> postUpdate");
+//    }
+//
+//    @PreRemove // delete 메서드가 실행되기 전에 실행되는 메서드
+//    public void preRemove() {
+//        System.out.println(">>>> preRemove");
+//    }
+//
+//    @PostRemove // delete 메서드가 실행되고 난 후 실행되는 메서드
+//    public void postRemove() {
+//        System.out.println(">>>> postRemove");
+//    }
+//
+//    @PostLoad // select 조회가 실행되고 난 후 실행되는 메서드
+//    public void postLoad() {
+//        System.out.println(">>>> postLoad");
+//    }
+
+
 
 }
