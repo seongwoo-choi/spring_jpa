@@ -34,4 +34,37 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByEmailOrName(String email, String name);
 
+    List<User> findByIdAfter(Long id);
+
+    List<User> findByCreatedAtGreaterThan(LocalDateTime yesterday);
+
+    List<User> findByCreatedAtGreaterThanEqual(LocalDateTime yesterday);
+
+    List<User> findByCreatedAtBetween(LocalDateTime yesterday, LocalDateTime tomorrow);
+
+    List<User> findByIdBetween(Long id1, Long id2);
+
+    List<User> findByIdGreaterThanEqualAndIdLessThanEqual(Long id1, Long id2);
+
+    List<User> findByIdIsNotNull();
+
+    List<User> findByNameIn(List<String> names);
+
+    List<User> findByNameStartingWith(String name);
+
+    List<User> findByNameEndingWith(String name);
+
+    List<User> findByNameContains(String name);
+
+    List<User> findByNameLike(String name);
+
+    // is 키워드는 특별한 역할을 하지 않고 코드 가독성을 높이는 키워드이다.
+    List<User> findUserByNameIs(String name);
+
+    // 위의 쿼리메서드와 같은 역할이다.
+    List<User> findUserByName(String name);
+
+    // 위의 쿼리메서드와 같은 역할이다.
+    List<User> findUserByNameEquals(String name);
+
 }

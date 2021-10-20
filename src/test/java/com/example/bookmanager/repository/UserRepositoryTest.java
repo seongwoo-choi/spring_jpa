@@ -114,30 +114,87 @@ class UserRepositoryTest {
 
     @Test
     void select() {
-        userRepository.save(new User(1, "a", "a@naver.com", LocalDateTime.now(), LocalDateTime.now()));
-        userRepository.save(new User(2, "b", "b@naver.com", LocalDateTime.now(), LocalDateTime.now()));
-        userRepository.save(new User(3, "c", "c@naver.com", LocalDateTime.now(), LocalDateTime.now()));
-        userRepository.save(new User(4, "d", "d@naver.com", LocalDateTime.now(), LocalDateTime.now()));
-        userRepository.save(new User(5, "e", "e@google.co.kr", LocalDateTime.now(), LocalDateTime.now()));
-        userRepository.save(new User(6, "a", "a@google.co.kr", LocalDateTime.now(), LocalDateTime.now()));
+        userRepository.save(new User(1, "abb", "a@naver.com", LocalDateTime.now(), LocalDateTime.now()));
+        userRepository.save(new User(2, "bab", "b@naver.com", LocalDateTime.now(), LocalDateTime.now()));
+        userRepository.save(new User(3, "caa", "c@naver.com", LocalDateTime.now(), LocalDateTime.now()));
+        userRepository.save(new User(4, "dbca", "d@naver.com", LocalDateTime.now(), LocalDateTime.now()));
+        userRepository.save(new User(5, "ecb", "e@google.co.kr", LocalDateTime.now(), LocalDateTime.now()));
+        userRepository.save(new User(6, "fca", "f@google.co.kr", LocalDateTime.now(), LocalDateTime.now()));
 
+        // select * from User where User.email = ?
         System.out.println("findByEmail :" + userRepository.findByEmail("a@naver.com"));
+
+        // select * from User where User.email = ?
         System.out.println("getByEmail :" + userRepository.getByEmail("a@naver.com"));
+
+        // select * from User where User.email = ?
         System.out.println("readByEmail :" + userRepository.readByEmail("a@naver.com"));
+
+        // select * from User where User.email = ?
         System.out.println("queryByEmail :" + userRepository.queryByEmail("a@naver.com"));
+
+        // select * from User where User.email = ?
         System.out.println("searchByEmail :" + userRepository.searchByEmail("a@naver.com"));
+
+        // select * from User where User.email = ?
         System.out.println("streamByEmail :" + userRepository.streamByEmail("a@naver.com"));
+
+        // select * from User where User.email = ?
         System.out.println("findUserByEmail :" + userRepository.findUserByEmail("a@naver.com")); // findUserByEmail 에서 User 는 구현체에서 무시된다.
 
+        // select * from User where User.name = a limit 1
         System.out.println("findFirst1ByName :" + userRepository.findFirst1ByName("a"));
+
+        // select * from User where User.name = a limit 1
         System.out.println("findTop1ByName :" + userRepository.findTop1ByName("a"));
+
+        // select * from User where User.name = ?      => jpa 가 인식하지 못함
         System.out.println("findLast1ByName :" + userRepository.findLast1ByName("a"));
 
+        // select * from User where User.name = ? and User.email = ?
         System.out.println("findByEmailAndName :" + userRepository.findByEmailAndName("a@naver.com", "a"));
+
+        // select * from User where User.email = ? or User.name = ?
         System.out.println("findByEmailOrName :" + userRepository.findByEmailOrName("a@naver.com", "b"));
 
+        // select * from User where User.id > ?
+        System.out.println("findByIdAfter :" + userRepository.findByIdAfter(1L));
 
+        // select * from User where User.createdAt > ?
+        System.out.println("findByCreatedAtGreaterThan :" + userRepository.findByCreatedAtGreaterThan(LocalDateTime.now().minusDays(1L)));
 
+        // select * from User where User.createdAt >= ?
+        System.out.println("findByCreatedAtGreaterThanEqual :" + userRepository.findByCreatedAtGreaterThanEqual(LocalDateTime.now().minusDays(1L)));
 
+        // select * from User where User.createdAt between ? and ?
+        System.out.println("findByCreatedAtBetween :" + userRepository.findByCreatedAtBetween(LocalDateTime.now().minusDays(1L), LocalDateTime.now()));
+
+        // select * from User where User.id between ? and ?    => 1L 과 3L 끝 값을 포함한 값
+        System.out.println("findByIdBetween :" + userRepository.findByIdBetween(1L, 3L));
+
+        // select * from User where User.id >= ? and User.id <= ?    => between 과 같다.
+        System.out.println("findByIdGreaterThanEqualAndIdLessThanEqual :" + userRepository.findByIdGreaterThanEqualAndIdLessThanEqual(1L, 3L));
+
+        // select * from User where User.id is not null
+        System.out.println("findByIdIsNotNull :" + userRepository.findByIdIsNotNull());
+
+        // String 에서 empty 는 "" 빈 문자열을 뜻 함. 여기선 컬렉션 타입의 empty 를 체크함
+        // System.out.println("findByAddressesIsNotEmpty :" + userRepository.findByAddressesIsNotEmpty());
+
+        // in 절은 보통 다른 쿼리의 return 된 결과 값을 넣는다.
+        // select * from User where User.name in (?, ?)
+        System.out.println("findByNameIn :"+userRepository.findByNameIn(Lists.newArrayList("a", "b")));
+
+        // select * from User where User.name like ?% escape ?
+        System.out.println("findByNameStartingWith :"+userRepository.findByNameStartingWith("a"));
+
+        // select * from User where User.name like %? escape ?
+        System.out.println("findByNameEndingWith :"+userRepository.findByNameEndingWith("b"));
+
+        // select * from User where User.name like %?% escape ?
+        System.out.println("findByNameContains :"+userRepository.findByNameContains("c"));
+
+        // select * from User where User.name lik %? escape ?
+        System.out.println("findByNameLike :" + userRepository.findByNameLike("%ab"));
     }
 }
