@@ -19,10 +19,10 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 // @PrePersist, @PreUpdate 를 사용하기 위한 EntityListeners -> @CreatedDate, @LastModifiedDate 를 추가하여 리스너 역할을 Jpa 가 자동으로 해준다.
 //@EntityListeners(value = AuditingEntityListener.class)
-public class UserHistory extends BaseEntity implements Auditable {
+public class UserHistory extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long userId;

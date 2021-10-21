@@ -16,31 +16,24 @@ import java.time.LocalDateTime;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-//@EntityListeners(value = AuditingEntityListener.class)
-public class Book extends BaseEntity implements Auditable {
+public class Book extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String name;
 
-    private String author;
+    private String category;
 
-//    @CreatedDate
-//    private LocalDateTime createdAt;
-//
-//    @LastModifiedDate
-//    private LocalDateTime updatedAt;
+    private Long authorId;
 
-//    @PrePersist
-//    public void prePersist() {
-//        this.createdAt = LocalDateTime.now();
-//        this.updatedAt = LocalDateTime.now();
-//    }
-//
-//    @PreUpdate
-//    public void preUpdate() {
-//        this.updatedAt = LocalDateTime.now();
-//    }
+    private Long publisherId;
 
+    // Entity 릴레이션을 사용하는 경우에 특히 ToString 메서드는 순환참조가 걸리게 된다.
+    // 그래서 특별히 필요한 경우를 제외하면 릴레이션은 단방향을 걸거나 ToString 에서 제외하는 처리가 필요하다.
+    // 여기선 ToString.Exclude 로 ToString 에서 제거한다.
+    // 연관키를 해당 테이블에서 더 이상 가지지 않는다.
+    @OneToOne(mappedBy = "book")
+    @ToString.Exclude
+    private BookReviewInfo bookReviewInfo;
 }

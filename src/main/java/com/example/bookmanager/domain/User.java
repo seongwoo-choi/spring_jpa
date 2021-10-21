@@ -22,11 +22,11 @@ import java.time.LocalDateTime;
 // index 나 제약사항은 db 에 맡기고 Entity 에는 적용시키지 않는게 보편적이다.
 //@Table(name = "user", indexes = { @Index(columnList = "name")}, uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 // BaseEntity 의 @MappedSuperclass 로 인해 내부변수들을 User Entity 의 컬럼으로 사용
-public class User extends BaseEntity implements Auditable {
+public class User extends BaseEntity {
 
     // User 라는 테이블의 pk, 1 씩 자동으로 증가
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     // Enum 을 사용하는 경우 EnumType.STRING 으로 해줘야 Enum 값이 추가될 때 오류가 발생하지 않는다.
