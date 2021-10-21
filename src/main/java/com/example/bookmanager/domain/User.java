@@ -1,21 +1,28 @@
 package com.example.bookmanager.domain;
 
+import com.example.bookmanager.domain.listener.Auditable;
+import com.example.bookmanager.domain.listener.UserEntityListener;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Builder
 @Entity
-@EntityListeners(value = MyEntityListener.class)
+@EntityListeners(value = { AuditingEntityListener.class, UserEntityListener.class })
 // index 나 제약사항은 db 에 맡기고 Entity 에는 적용시키지 않는게 보편적이다.
 //@Table(name = "user", indexes = { @Index(columnList = "name")}, uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
-public class User implements Auditable{
+// BaseEntity 의 @MappedSuperclass 로 인해 내부변수들을 User Entity 의 컬럼으로 사용
+public class User extends BaseEntity implements Auditable {
 
     // User 라는 테이블의 pk, 1 씩 자동으로 증가
     @Id
@@ -36,10 +43,12 @@ public class User implements Auditable{
     // 데이터베이스에 crtdt 라고 구현되고 Entity 의 createdAt 과 맵핑된다.
     // nullable=false 컬럼에 null 이 올 수 없다. 즉, createdAt 에는 반드시 값이 존재해야 한다.
 //    @Column(name = "crtdat", nullable = false)
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
+//    @Column(updatable = false)
+//    @CreatedDate // @PrePersist Auditing 하기 위한 어노테이션(AuditingEntityListener)
+//    private LocalDateTime createdAt;
+//
+//    @LastModifiedDate // @PreUpdate Auditing 하기 위한 어노테이션(AuditingEntityListener)
+//    private LocalDateTime updatedAt;
 
 
 //    // 개발자가 setCreatedAt / setUpdatedAt 을 하지않아도 자동으로 세팅이 된다.

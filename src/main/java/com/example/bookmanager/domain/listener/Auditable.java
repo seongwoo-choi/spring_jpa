@@ -1,6 +1,7 @@
-package com.example.bookmanager.domain;
+package com.example.bookmanager.domain.listener;
 
 import java.time.LocalDateTime;
+
 
 public interface Auditable {
     LocalDateTime getCreatedAt();

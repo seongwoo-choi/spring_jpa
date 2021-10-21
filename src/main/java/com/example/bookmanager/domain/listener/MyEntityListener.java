@@ -1,5 +1,7 @@
-package com.example.bookmanager.domain;
+package com.example.bookmanager.domain.listener;
 
+
+import com.example.bookmanager.domain.listener.Auditable;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;

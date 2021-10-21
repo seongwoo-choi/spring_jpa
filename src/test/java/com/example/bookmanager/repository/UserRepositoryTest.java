@@ -24,6 +24,9 @@ class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserHistoryRepository userHistoryRepository;
+
 //    @Test
 //    @Transactional
 //    void crud() {
@@ -244,20 +247,20 @@ class UserRepositoryTest {
         userRepository.save(user2);
     }
 
-    @Test
-    void enumTest() {
-        userRepository.save(new User(10, null,"a", "a@naver.com", LocalDateTime.now(), LocalDateTime.now()));
-        User user = userRepository.findById(1L).orElseThrow(RuntimeException::new);
-
-        user.setGender(Gender.MALE);
-
-        // user update
-        userRepository.save(user);
-
-        userRepository.findAll().forEach(System.out::println);
-
-        System.out.println(userRepository.findRawRecord().get("gender"));
-    }
+//    @Test
+//    void enumTest() {
+//        userRepository.save(new User(10, null,"a", "a@naver.com", LocalDateTime.now(), LocalDateTime.now()));
+//        User user = userRepository.findById(1L).orElseThrow(RuntimeException::new);
+//
+//        user.setGender(Gender.MALE);
+//
+//        // user update
+//        userRepository.save(user);
+//
+//        userRepository.findAll().forEach(System.out::println);
+//
+//        System.out.println(userRepository.findRawRecord().get("gender"));
+//    }
 
     @Test
     void listenerTest() {
@@ -303,6 +306,29 @@ class UserRepositoryTest {
         userRepository.save(user2);
 
         System.out.println("to-be : " + userRepository.findAll().get(0));
+    }
+
+    @Test
+    void userHistoryTest() {
+        User user = new User();
+        user.setEmail("csw@naver.com");
+        user.setName("csw");
+
+        User user2 = new User();
+        user2.setEmail("cs@naver.com");
+        user2.setName("cs");
+
+        User user3 = new User();
+        user3.setEmail("sw@naver.com");
+        user3.setName("sw");
+
+        userRepository.save(user);
+
+        user.setName("choi");
+
+        userRepository.save(user);
+
+        userHistoryRepository.findAll().forEach(System.out::println);
     }
 
     private Sort getSort() {
