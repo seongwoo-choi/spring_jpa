@@ -9,12 +9,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
+// @NonNull 어노테이션을 사용하기 위해 작성
 @RequiredArgsConstructor
 @Builder
 @Entity
@@ -39,6 +42,12 @@ public class User extends BaseEntity {
     @NonNull
     @Column(unique = true) // 이 컬럼의 값은 유일해야 한다.
     private String email;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn // Entity 가 어떤 컬럼으로 join 을 할 지 정해주는 어노테이션
+    // NullPointException 이 발생하지 않도록 빈 배열 값 넣어준다.
+    private List<UserHistory> userHistoryList = new ArrayList<>();
+
 
     // 데이터베이스에 crtdt 라고 구현되고 Entity 의 createdAt 과 맵핑된다.
     // nullable=false 컬럼에 null 이 올 수 없다. 즉, createdAt 에는 반드시 값이 존재해야 한다.

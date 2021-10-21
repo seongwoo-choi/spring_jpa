@@ -2,6 +2,7 @@ package com.example.bookmanager.repository;
 
 import com.example.bookmanager.domain.Gender;
 import com.example.bookmanager.domain.User;
+import com.example.bookmanager.domain.UserHistory;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -329,6 +330,33 @@ class UserRepositoryTest {
         userRepository.save(user);
 
         userHistoryRepository.findAll().forEach(System.out::println);
+    }
+
+    @Test
+    void userRealationTest() {
+        User user = new User();
+        user.setName("david");
+        user.setEmail("david@naver.com");
+        user.setGender(Gender.MALE);
+
+        userRepository.save(user);
+
+        user.setName("daniel");
+        userRepository.save(user);
+
+        user.setEmail("daniel@naver.com");
+        userRepository.save(user);
+
+        // 특정 user 의 history 가 쌓인 것을 확인할 수 있다.
+//        userHistoryRepository.findAll().forEach(System.out::println);
+
+//        List<UserHistory> result = userHistoryRepository.findByUserId(
+//                userRepository.findByEmail("daniel@naver.com").getId());
+
+
+        List<UserHistory> result = userRepository.findByEmail("daniel@naver.com").getUserHistoryList();
+
+        result.forEach(System.out::println);
     }
 
     private Sort getSort() {

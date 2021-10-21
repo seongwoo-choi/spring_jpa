@@ -25,16 +25,13 @@ public class UserHistory extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     private Long userId;
 
     private String name;
 
     private String email;
 
-//    @CreatedDate // @PrePersist Auditing 하기 위한 어노테이션(AuditingEntityListener)
-//    private LocalDateTime createdAt;
-//
-//    @LastModifiedDate // @PreUpdate Auditing 하기 위한 어노테이션(AuditingEntityListener)
-//    private LocalDateTime updatedAt;
+    private Gender gender;
 
 }
