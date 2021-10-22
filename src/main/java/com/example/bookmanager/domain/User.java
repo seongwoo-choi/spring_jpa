@@ -44,9 +44,12 @@ public class User extends BaseEntity {
     private String email;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn // Entity 가 어떤 컬럼으로 join 을 할 지 정해주는 어노테이션
+    // Entity 가 어떤 컬럼으로 join 을 할 지 정해주는 어노테이션
+    // 생성과 업데이트를 할 수 없는 컬럼, 오로지 읽기만 가능하다.
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     // NullPointException 이 발생하지 않도록 빈 배열 값 넣어준다.
     private List<UserHistory> userHistoryList = new ArrayList<>();
+
 
 
     // 데이터베이스에 crtdt 라고 구현되고 Entity 의 createdAt 과 맵핑된다.
