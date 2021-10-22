@@ -24,10 +24,10 @@ public class UserEntityListener {
         User user = (User) o;
 
         UserHistory userHistory = new UserHistory();
-        userHistory.setUserId(user.getId());
         userHistory.setEmail(user.getEmail());
         userHistory.setName(user.getName());
         userHistory.setGender(user.getGender());
+        userHistory.setUser(user);
 
         userHistoryRepository.save(userHistory);
     }

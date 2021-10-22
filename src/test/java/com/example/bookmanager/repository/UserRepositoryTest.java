@@ -348,7 +348,7 @@ class UserRepositoryTest {
         userRepository.save(user);
 
         // 특정 user 의 history 가 쌓인 것을 확인할 수 있다.
-//        userHistoryRepository.findAll().forEach(System.out::println);
+        userHistoryRepository.findAll().forEach(System.out::println);
 
 //        List<UserHistory> result = userHistoryRepository.findByUserId(
 //                userRepository.findByEmail("daniel@naver.com").getId());
@@ -357,6 +357,9 @@ class UserRepositoryTest {
         List<UserHistory> result = userRepository.findByEmail("daniel@naver.com").getUserHistoryList();
 
         result.forEach(System.out::println);
+
+        // userHistory 배열의 첫번째 유저의 값을 가져온다.
+        System.out.println("UserHistory.getUser() : "+userHistoryRepository.findAll().get(0).getUser());
     }
 
     private Sort getSort() {

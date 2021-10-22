@@ -25,14 +25,14 @@ public class UserHistory extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 테이블에서 컬럼을 생성할 때 user_id 로 지정
-    @Column(name = "user_id")
-    private Long userId;
-
     private String name;
 
     private String email;
 
     private Gender gender;
+
+    // 외래키
+    @ManyToOne
+    private User user;
 
 }
