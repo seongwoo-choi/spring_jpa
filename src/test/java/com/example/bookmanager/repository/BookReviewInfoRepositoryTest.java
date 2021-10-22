@@ -52,7 +52,7 @@ class BookReviewInfoRepositoryTest {
     private Book givenBook() {
         Book book = new Book();
         book.setName("book!");
-        book.setAuthorId(1L);
+//        book.setAuthorId(1L);
 //        book.setPublisherId(1L);
 
         return bookRepository.save(book);

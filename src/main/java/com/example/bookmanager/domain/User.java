@@ -53,7 +53,7 @@ public class User extends BaseEntity {
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     // NullPointException 이 발생하지 않도록 빈 배열 값 넣어준다.
     @ToString.Exclude
-    private List<UserHistory> userHistoryList = new ArrayList<>();
+    private List<UserHistory> userHistories = new ArrayList<>();
 
     @OneToMany
     @JoinColumn(name = "user_id")
