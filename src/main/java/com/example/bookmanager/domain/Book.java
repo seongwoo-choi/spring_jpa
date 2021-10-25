@@ -45,11 +45,21 @@ public class Book extends BaseEntity {
     @ToString.Exclude
     private List<Review> reviews = new ArrayList<>();
 
-    @ManyToMany
+//    @ManyToMany
+    @OneToMany
+    @JoinColumn(name="book_id")
     @ToString.Exclude
-    private List<Author> authors;
+    private List<BookAndAuthor> bookAndAuthors = new ArrayList<>();
 
-    public void addAuthor(Author... author) {
-        Collections.addAll(this.authors, author);
+    public void addBookAndAuthor(BookAndAuthor... bookAndAuthors) {
+        Collections.addAll(this.bookAndAuthors, bookAndAuthors);
     }
+
+    // User
+
+    // 즉 User 와 Order 1대 N 관계로 처리
+    // user_products 중간 테이블 생성 => Order 라는 또 다른 entity 로 처리할 수 있다.
+
+    // Order 와 Product 는 M대 1 관계로 처리
+    // Product
 }

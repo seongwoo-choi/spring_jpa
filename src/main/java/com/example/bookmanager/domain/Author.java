@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class Author extends BaseEntity{
+public class Author extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,13 +25,15 @@ public class Author extends BaseEntity{
 
     private String country;
 
-    @ManyToMany
+    // @ManyToMany
+    @OneToMany
+    @JoinColumn(name = "author_id")
     @ToString.Exclude
-    private List<Book> books = new ArrayList<>();
+    private List<BookAndAuthor> bookAndAuthors = new ArrayList<>();
 
     // Book... => 값을 배열 형태로 받는다.
     // Collections 의 addAll 을 사용해서 배열에 입력받은 값을 추가한다.
-    public void addBook(Book... book) {
-        Collections.addAll(this.books, book);
+    public void addBookAndAuthors(BookAndAuthor... bookAndAuthors) {
+        Collections.addAll(this.bookAndAuthors, bookAndAuthors);
     }
 }
