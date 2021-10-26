@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +20,7 @@ import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatc
 
 // Spring context 를 활용해서 Test 를 하겠다.
 @SpringBootTest
+@Transactional // 각 테스트가 종료될 때 마다 DB 가 롤백된다.
 class UserRepositoryTest {
 
     @Autowired

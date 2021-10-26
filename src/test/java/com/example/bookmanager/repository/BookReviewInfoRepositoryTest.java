@@ -41,11 +41,12 @@ class BookReviewInfoRepositoryTest {
 
         System.out.println(">>>> " + result);
 
-        BookReviewInfo result2 = bookRepository.findById(1L).orElseThrow(RuntimeException::new).getBookReviewInfo();
+        BookReviewInfo result2 = bookRepository
+                .findById(7L)
+                .orElseThrow(RuntimeException::new)
+                .getBookReviewInfo();
 
         System.out.println(">>>> " + result2);
-
-
     }
 
 

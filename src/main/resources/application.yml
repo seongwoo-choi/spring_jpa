@@ -7,4 +7,15 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
+    generate-ddl: false
+    hibernate:
+      # 생성하고 persistent context 를 띄울 때 create 를 하고 종료할 때 drop 한다.
+      # update => 실제 스키마와 엔티티를 비교해서 변경된 부분을 바꿔준다.
+      # ddl-auto 옵션이 사용되면 generate-ddl 이 꺼진다.
+      ddl-auto: create-drop
+  datasource:
+    url: jdbc:mysql://localhost:3306/book_manager?serverTimezone=UTC&characterEncoding=utf8
+    username: root
+    password:
+    # shema.sql 혹은 data.spl 파일을 로딩해서 실행
+    initialization-mode: always
