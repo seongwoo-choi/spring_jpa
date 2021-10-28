@@ -32,6 +32,10 @@ public class Book extends BaseEntity {
     @ToString.Exclude
     private Publisher publisher;
 
+    @ManyToOne
+    @ToString.Exclude
+    private Author author;
+
     // Entity 릴레이션을 사용하는 경우에 특히 ToString 메서드는 순환참조가 걸리게 된다.
     // 그래서 특별히 필요한 경우를 제외하면 릴레이션은 단방향을 걸거나 ToString 에서 제외하는 처리가 필요하다.
     // 여기선 ToString.Exclude 로 ToString 에서 제거한다.

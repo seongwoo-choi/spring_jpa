@@ -40,7 +40,7 @@ public class UserService {
         // DB 에 저장되지 못하고 가비지 컬렉터에 의해 사라지지 않고 엔티티 매니저에 의해 DB 에 값이 저장된다.
         // 영속성 컨텍스트에 의해 객체가 관리되면 setter 를 통해 값을 변경해도 db 에 값이 저장된다.
         // 준영속 상태에 있는 객체일 경우 DB 에 저장되지 않는다.
-        user.setName(("nameUserAfterPersist"));
+        user.setName("nameUserAfterPersist");
 
         // 준영속 상태였던 객체를 다시 영속화 해준다.
         entityManager.merge(user);
