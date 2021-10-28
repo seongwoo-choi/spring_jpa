@@ -4,6 +4,7 @@ import com.example.bookmanager.domain.listener.Auditable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -19,6 +20,7 @@ import java.util.List;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
+@DynamicUpdate // => READ_UNCOMITTIED 에서 데이터가 업데이트 된 이후 롤백되는 케이스에서 데이터 정합성을 해친다. 그것을 막기 위해 사용
 public class Book extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
