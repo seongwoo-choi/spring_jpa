@@ -3,6 +3,7 @@ package com.example.bookmanager.domain;
 import com.example.bookmanager.domain.listener.Auditable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,48 +17,55 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity
-@Table
 @Data
+@NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-@DynamicUpdate // => READ_UNCOMITTIED 에서 데이터가 업데이트 된 이후 롤백되는 케이스에서 데이터 정합성을 해친다. 그것을 막기 위해 사용
+//@DynamicUpdate // => READ_UNCOMITTIED 에서 데이터가 업데이트 된 이후 롤백되는 케이스에서 데이터 정합성을 해친다. 그것을 막기 위해 사용
 public class Book extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
 
     private String name;
 
+
     private String category;
 
-    @ManyToOne
-    @ToString.Exclude
-    private Publisher publisher;
 
-    @ManyToOne
-    @ToString.Exclude
-    private Author author;
+    private Long authorId;
 
-    // Entity 릴레이션을 사용하는 경우에 특히 ToString 메서드는 순환참조가 걸리게 된다.
-    // 그래서 특별히 필요한 경우를 제외하면 릴레이션은 단방향을 걸거나 ToString 에서 제외하는 처리가 필요하다.
-    // 여기선 ToString.Exclude 로 ToString 에서 제거한다.
-    // 연관키를 해당 테이블에서 더 이상 가지지 않는다.
+
+//    private Long publisherId;
+
+
     @OneToOne(mappedBy = "book")
     @ToString.Exclude
     private BookReviewInfo bookReviewInfo;
+
 
     @OneToMany
     @JoinColumn(name = "book_id")
     @ToString.Exclude
     private List<Review> reviews = new ArrayList<>();
 
-//    @ManyToMany
+
+    // book.setPublisher(publisher), bookRepository.save(book) 만 해주어도 자동으로 db 에 값이 저장된다.
+    // 이게 CASCADE 영속성 전이
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @ToString.Exclude
+    private Publisher publisher;
+
+
+    //    @ManyToMany
     @OneToMany
-    @JoinColumn(name="book_id")
+    @JoinColumn(name = "book_id")
     @ToString.Exclude
     private List<BookAndAuthor> bookAndAuthors = new ArrayList<>();
 
-    public void addBookAndAuthor(BookAndAuthor... bookAndAuthors) {
+
+    public void addBookAndAuthors(BookAndAuthor... bookAndAuthors) {
         Collections.addAll(this.bookAndAuthors, bookAndAuthors);
     }
 

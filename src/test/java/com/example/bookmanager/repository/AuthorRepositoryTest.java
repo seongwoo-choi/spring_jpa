@@ -53,10 +53,10 @@ class AuthorRepositoryTest {
         BookAndAuthor bookAndAuthor5 = givenBookAndAuthor(book4, author1);
         BookAndAuthor bookAndAuthor6 = givenBookAndAuthor(book4, author2);
 
-        book1.addBookAndAuthor(bookAndAuthor1);
-        book2.addBookAndAuthor(bookAndAuthor2);
-        book3.addBookAndAuthor(bookAndAuthor3, bookAndAuthor4);
-        book4.addBookAndAuthor(bookAndAuthor5, bookAndAuthor6);
+//        book1.addBookAndAuthor(bookAndAuthor1);
+//        book2.addBookAndAuthor(bookAndAuthor2);
+//        book3.addBookAndAuthor(bookAndAuthor3, bookAndAuthor4);
+//        book4.addBookAndAuthor(bookAndAuthor5, bookAndAuthor6);
 
         author1.addBookAndAuthors(bookAndAuthor1, bookAndAuthor3, bookAndAuthor5);
         author2.addBookAndAuthors(bookAndAuthor2, bookAndAuthor4, bookAndAuthor6);

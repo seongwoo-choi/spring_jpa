@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -20,22 +21,37 @@ public class BookService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final EntityManager entityManager;
+    private final AuthorService authorService;
 
 
     // rollbackFor = Exception.class 을 사용하면 Exception 이 CheckedException 임에도 불구하고 rollback 이 되게 된다.
-    @Transactional()
+    // propagation = Propagation.REQUIRED 디폴트 값, 트랜잭션을 재활용한다.
+    // propagation = Propagation.REQUIRES_NEW, 트랜잭션이 있던 없던 새로운 트랜잭션을 생성.
+    // propagation = Propagation.NESTED, 별도의 트랜잭션을 생성하는 것이 아니라, 하나의 트랜잭션이지만 개별적으로 독립적으로 움직일 수 있는 녀석
+    @Transactional(propagation = Propagation.REQUIRED)
     public void putBookAndAuthor() {
         Book book = new Book();
         book.setName("JPA 시작");
 
         bookRepository.save(book);
 
-        Author author = new Author();
-        author.setName("martin");
+        // 호출한 트랜잭션이 오류가 발생하게 되면 author 는 롤백이 일어나게 되는데 기존에 실행했던 save 에 대해선 커밋이 일어난다.
+        // NESTED 자체에 요 내에서 처리하도록 정리되어 있기 때문에 book 에는 영향을 끼치지 않는다.
+        // 만약 book 에서 오류가 발생하게 되면 book 과 author 모두 롤백된다.
+        // 왜냐하면 동일한 트랜잭션을 사용하고 있기 때문이다.
+        try {
+            authorService.putAuthor();
+        } catch (RuntimeException e) {
+//            System.out.println(e.getMessage());
+        }
 
-        authorRepository.save(author);
+        throw new RuntimeException("오류가 발생하였습니다. transaction 은 어떻게 될까요?");
 
-        throw new RuntimeException("오류가 나서 DB commit 이 발생하지 않습니다.");
+//        Author author = new Author();
+//        author.setName("martin");
+//
+//        authorRepository.save(author);
+
     }
 
     // READ_UNCOMMITTED => 커밋되지 않는(트랜잭션 처리중인) 데이터에 대한 읽기를 허용, dirty read 문제와 데이터 정합성 문제
