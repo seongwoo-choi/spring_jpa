@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -22,6 +23,7 @@ import java.util.List;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 //@DynamicUpdate // => READ_UNCOMITTIED 에서 데이터가 업데이트 된 이후 롤백되는 케이스에서 데이터 정합성을 해친다. 그것을 막기 위해 사용
+@Where(clause = "deleted = false") // where 절에 다음 조건들이 추가된다. (컬럼 중에서 deleted 의 값이 false 인 값)
 public class Book extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,6 +65,10 @@ public class Book extends BaseEntity {
     @JoinColumn(name = "book_id")
     @ToString.Exclude
     private List<BookAndAuthor> bookAndAuthors = new ArrayList<>();
+
+    // 해당 속성이 true 이면 지워졌다고 처리
+    // 이런 플래그를 사용했을 때 검색한 데이터에서 true 가 나타나면 안된다.
+    private boolean deleted;
 
 
     public void addBookAndAuthors(BookAndAuthor... bookAndAuthors) {
