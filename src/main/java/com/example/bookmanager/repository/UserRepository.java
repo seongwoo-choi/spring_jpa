@@ -84,4 +84,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Query value 의 결과값이 Map 의 키 밸류로 값이 저장된다
     @Query(value = "select * from user limit 1;", nativeQuery = true)
     Map<String, Object> findRawRecord();
+
+    @Query(value = "select * from user", nativeQuery = true)
+    List<Map<String, Object>> findAllRowRecord();
 }

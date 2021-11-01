@@ -4,6 +4,7 @@ import com.example.bookmanager.domain.Book;
 import com.example.bookmanager.domain.Publisher;
 import com.example.bookmanager.domain.Review;
 import com.example.bookmanager.domain.User;
+import com.example.bookmanager.repository.dto.BookStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -142,10 +143,10 @@ public class BookRepositoryTest {
                 LocalDateTime.now().minusDays(1L)
         ));
 
-        System.out.println("findByNameRecently : " +
-                bookRepository.findByNameRecently("csw",
-                        LocalDateTime.now().minusDays(1L),
-                        LocalDateTime.now().minusDays(1L)));
+//        System.out.println("findByNameRecently : " +
+//                bookRepository.findByNameRecently("csw",
+//                        LocalDateTime.now().minusDays(1L),
+//                        LocalDateTime.now().minusDays(1L)));
 
         System.out.println(bookRepository.findBookNameAndCategory());
 
@@ -194,6 +195,39 @@ public class BookRepositoryTest {
         bookRepository.findAllCustom().forEach(System.out::println);
 
         System.out.println(bookRepository.showTables());
+    }
+
+    @Test
+    void converterTest() {
+
+        Book book1 = new Book();
+        book1.setName("csw");
+        book1.setId(1L);
+        book1.setStatus(new BookStatus(200));
+
+        Book book2 = new Book();
+        book2.setName("csw2");
+        book2.setId(2L);
+        book2.setStatus(new BookStatus(200));
+
+        Book book3 = new Book();
+        book3.setId(3L);
+        book3.setName("csw3");
+        book3.setStatus(new BookStatus(100));
+
+        bookRepository.save(book1);
+        bookRepository.save(book2);
+        bookRepository.save(book3);
+
+        bookRepository.findAll().forEach(System.out::println);
+
+        Book book = new Book();
+        book.setId(4L);
+        book.setName("it");
+        book.setStatus(new BookStatus(200));
+
+        bookRepository.save(book);
+        System.out.println(bookRepository.findRawRecord().values());
     }
 
     private void givenBookAndReview() {

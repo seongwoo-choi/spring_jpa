@@ -21,9 +21,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Builder
 @Entity
-@EntityListeners(value = { AuditingEntityListener.class, UserEntityListener.class })
+@EntityListeners(value = {AuditingEntityListener.class, UserEntityListener.class})
 // index 나 제약사항은 db 에 맡기고 Entity 에는 적용시키지 않는게 보편적이다.
-@Table(name = "user", indexes = { @Index(columnList = "name")}, uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
+@Table(name = "user", indexes = {@Index(columnList = "name")}, uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 // BaseEntity 의 @MappedSuperclass 로 인해 내부변수들을 User Entity 의 컬럼으로 사용
 public class User extends BaseEntity {
 
@@ -42,6 +42,24 @@ public class User extends BaseEntity {
     @NonNull
     @Column(unique = true) // 이 컬럼의 값은 유일해야 한다.
     private String email;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "city", column = @Column(name = "home_city")),
+            @AttributeOverride(name = "district", column = @Column(name = "home_district")),
+            @AttributeOverride(name = "detail", column = @Column(name = "home_address_detail")),
+            @AttributeOverride(name = "zipCode", column = @Column(name = "home_zipCode"))
+    })
+    private Address homeAddress;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "city", column = @Column(name = "company_city")),
+            @AttributeOverride(name = "district", column = @Column(name = "company_district")),
+            @AttributeOverride(name = "detail", column = @Column(name = "company_address_detail")),
+            @AttributeOverride(name = "zipCode", column = @Column(name = "company_zipCode"))
+    })
+    private Address companyAddress;
 
 
     // userHistory 외래키

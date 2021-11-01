@@ -1,6 +1,8 @@
 package com.example.bookmanager.domain;
 
+import com.example.bookmanager.domain.converter.BookStatusConverter;
 import com.example.bookmanager.domain.listener.Auditable;
+import com.example.bookmanager.repository.dto.BookStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -29,29 +31,28 @@ public class Book extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String name;
-
 
     private String category;
 
-
     private Long authorId;
-
 
 //    private Long publisherId;
 
+//    @Convert(converter = BookStatusConverter.class) // entity 필드는 @Convert 를 사용한다.
+    // BookStatus 의 @Converter(autoApply=True) 로 하여서
+    // @Convert 어노테이션이 없더라도 해당 객체 타입이 엔티티에 필드로 선언이 되어있으면 무조건 컨버터를 통해 변환이된다.
+    // 개발자가 생성한 클래스에 한해서 autoApply 를 사용하여야 한다. int, string, float 이런 경우엔 autoApply 를 끄고 @Convert 를 사용하는 것이 좋다.
+    private BookStatus status; // 판매상태
 
     @OneToOne(mappedBy = "book")
     @ToString.Exclude
     private BookReviewInfo bookReviewInfo;
 
-
     @OneToMany
     @JoinColumn(name = "book_id")
     @ToString.Exclude
     private List<Review> reviews = new ArrayList<>();
-
 
     // book.setPublisher(publisher), bookRepository.save(book) 만 해주어도 자동으로 db 에 값이 저장된다.
     // 이게 CASCADE 영속성 전이
@@ -59,8 +60,6 @@ public class Book extends BaseEntity {
     @ToString.Exclude
     private Publisher publisher;
 
-
-    //    @ManyToMany
     @OneToMany
     @JoinColumn(name = "book_id")
     @ToString.Exclude

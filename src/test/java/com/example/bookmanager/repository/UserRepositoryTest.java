@@ -1,5 +1,6 @@
 package com.example.bookmanager.repository;
 
+import com.example.bookmanager.domain.Address;
 import com.example.bookmanager.domain.Gender;
 import com.example.bookmanager.domain.User;
 import com.example.bookmanager.domain.UserHistory;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +30,9 @@ class UserRepositoryTest {
 
     @Autowired
     private UserHistoryRepository userHistoryRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
 //    @Test
 //    @Transactional
@@ -302,7 +307,7 @@ class UserRepositoryTest {
 
         User user2 = userRepository.findById(1L).orElseThrow(RuntimeException::new);
 
-        System.out.println("as-is :"+user2);
+        System.out.println("as-is :" + user2);
 
         user2.setName("choi");
         userRepository.save(user2);
@@ -360,7 +365,48 @@ class UserRepositoryTest {
         result.forEach(System.out::println);
 
         // userHistory 배열의 첫번째 유저의 값을 가져온다.
-        System.out.println("UserHistory.getUser() : "+userHistoryRepository.findAll().get(0).getUser());
+        System.out.println("UserHistory.getUser() : " + userHistoryRepository.findAll().get(0).getUser());
+    }
+
+
+    @Test
+    void embedTest() {
+        User user = new User();
+        user.setName("david");
+        user.setEmail("david@naver.com");
+        user.setGender(Gender.MALE);
+        userRepository.save(user);
+        userRepository.findAll().forEach(System.out::println);
+
+        User user1 = new User();
+        user1.setName("avata");
+        user1.setHomeAddress(new Address("서울시", "강남구", "강남대로 111", "00000"));
+        user1.setCompanyAddress(new Address("서울시", "성동구", "성수 2로", "00000"));
+        userRepository.save(user1);
+
+        entityManager.clear();
+
+        User user2 = new User();
+        user2.setName("joshua");
+        user2.setHomeAddress(null);
+        user2.setCompanyAddress(null);
+
+        userRepository.save(user2);
+
+        entityManager.clear();
+
+        User user3 = new User();
+        user3.setName("jordan");
+        user3.setHomeAddress(new Address());
+        user3.setCompanyAddress(new Address());
+
+        userRepository.save(user3);
+
+        userRepository.findAll().forEach(System.out::println);
+        userHistoryRepository.findAll().forEach(System.out::println);
+
+        userRepository.findAllRowRecord().forEach(a -> System.out.println(a.values()));
+
     }
 
     private Sort getSort() {
