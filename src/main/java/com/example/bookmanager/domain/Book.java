@@ -49,8 +49,8 @@ public class Book extends BaseEntity {
     @ToString.Exclude
     private BookReviewInfo bookReviewInfo;
 
-    @OneToMany
-    @JoinColumn(name = "book_id")
+    @OneToMany(mappedBy = "book")
+//    @JoinColumn(name = "book_id")
     @ToString.Exclude
     private List<Review> reviews = new ArrayList<>();
 

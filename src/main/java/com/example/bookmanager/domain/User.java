@@ -65,16 +65,18 @@ public class User extends BaseEntity {
     // userHistory 외래키
     // OneToMany 에서 참조하는 값은 One 에 해당하는 PK 아이디를 Many 쪽에서 외래키로 갖게 된다.
     // 그래서 일반적인 상황에선 ManyToOne 이 깔끔하다.
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     // Entity 가 어떤 컬럼으로 join 을 할 지 정해주는 어노테이션
     // 생성과 업데이트를 할 수 없는 컬럼, 오로지 읽기만 가능하다.
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+//    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     // NullPointException 이 발생하지 않도록 빈 배열 값 넣어준다.
     @ToString.Exclude
     private List<UserHistory> userHistories = new ArrayList<>();
 
-    @OneToMany
-    @JoinColumn(name = "user_id")
+    @OneToMany(mappedBy = "user")
+//    @JoinColumn(name = "user_id")
     @ToString.Exclude
     private List<Review> reviews = new ArrayList<>();
+
+    
 }

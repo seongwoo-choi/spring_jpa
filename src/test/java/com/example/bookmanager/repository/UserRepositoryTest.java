@@ -245,6 +245,7 @@ class UserRepositoryTest {
         user.setName("csw");
         user.setEmail("csw@naver.com");
 
+
         userRepository.save(user);
 
         // findById ==> Optional 이기 때문에 orElseThrow 를 던지거나 Optional 로 형변환 해줘야 한다.
@@ -406,6 +407,11 @@ class UserRepositoryTest {
         userHistoryRepository.findAll().forEach(System.out::println);
 
         userRepository.findAllRowRecord().forEach(a -> System.out.println(a.values()));
+
+//        assertAll(
+//                () -> assertThat(userRepository.findById(1L).get().getHomeAddress().isNull()),
+//                () -> assertThat(userRepository.findById(2L).get().getHomeAddress().isInstanceOf(Address.class))
+//        );
 
     }
 

@@ -19,3 +19,6 @@ spring:
     password: chma0326@
     # shema.sql 혹은 data.spl 파일을 로딩해서 실행
     initialization-mode: always
+logging:
+  level:
+    root: trace # 운영 서버에선 사용 x
